@@ -1,0 +1,31 @@
+package { 'ruby2.0':
+  ensure => 'installed',
+}
+
+package { 'ruby2.0-dev':
+  ensure => 'installed',
+}
+
+file { '/usr/local/bin/ruby':
+  ensure => link,
+  target => '/usr/bin/ruby2.0',
+  require => [Package['ruby2.0'], Package['ruby2.0-dev']],
+}
+
+file { '/usr/local/bin/gem':
+  ensure => link,
+  target => '/usr/bin/gem2.0',
+  require => [Package['ruby2.0'], Package['ruby2.0-dev']],
+}
+
+package { 'bundler':
+  ensure => 'installed',
+  provider => 'gem',
+  require => File['/usr/local/bin/gem'],
+}
+
+package { 'rouge':
+  ensure => 'installed',
+  provider => 'gem',
+  require => File['/usr/local/bin/gem'],
+}
